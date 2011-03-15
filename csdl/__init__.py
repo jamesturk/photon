@@ -134,6 +134,10 @@ class Renderer(object):
     def draw_line(self, x1, y1, x2, y2):
         errcheck(_SDL.SDL_RenderDrawLine(self._renderer, x1, y1, x2, y2))
 
+
+
+_SDL.SDL_GetWindowTitle.restype = ctypes.c_char_p
+
 class Window(object):
 
     def __init__(self, title, x, y, w, h, flags=0):
@@ -144,7 +148,82 @@ class Window(object):
     def destroy(self):
         _SDL.SDL_DestroyWindow(self._handle)
 
+    @property
+    def display(self):
+        return errcheck(_SDL.SDL_GetWindowDisplay(self._handle))
 
+    def get_display_mode(self):
+        mode = DisplayMode()
+        errcheck(_SDL.SDL_GetWindowDisplayMode(self._handle,
+                                               ctypes.byref(mode)))
+        return mode
+
+    def get_flags(self):
+        return _SDL.SDL_GetWindowFlags(self._handle)
+
+    @property
+    def grab(self):
+        return _SDL.SDL_GetWindowGrab(self._handle) == 1
+
+    @grab.setter
+    def grab(self, grab_mode):
+        _SDL.SDL_SetWindowGrab(self._handle, 1 if grab_mode else 0)
+
+    @property
+    def id(self):
+        return _SDL.SDL_GetWindowID(self._handle)
+
+    @property
+    def pixel_format(self):
+        return errcheck(_SDL.SDL_GetWindowPixelFormat(self._handle))
+
+    @property
+    def position(self):
+        x = ctypes.c_int()
+        y = ctypes.c_int()
+        _SDL.SDL_GetWindowPosition(self._handle, ctypes.byref(x),
+                                   ctypes.byref(y))
+        return x.value, y.value
+
+    def move(self, x, y):
+        _SDL.SDL_SetWindowPosition(self._handle, x, y)
+
+    @property
+    def size(self):
+        w = ctypes.c_int()
+        h = ctypes.c_int()
+        _SDL.SDL_GetWindowSize(self._handle, ctypes.byref(w),
+                               ctypes.byref(h))
+        return w,h
+
+    def resize(self, w, h):
+        _SDL.SDL_SetWindowSize(self._handle, w, h)
+
+    @property
+    def title(self):
+        return _SDL.SDL_GetWindowTitle(self._handle)
+
+    @title.setter
+    def title(self, title_str):
+        _SDL.SDL_SetWindowTitle(self._handle, title_str)
+
+    def hide(self):
+        _SDL.SDL_HideWindow(self._handle)
+
+    def maximize(self):
+        _SDL.SDL_MaximizeWindow(self._handle)
+
+    def minimize(self):
+        _SDL.SDL_MinimizeWindow(self._handle)
+
+    def raise(self):
+        _SDL.SDL_RaiseWindow(self._handle)
+
+    def restore(self):
+        _SDL.SDL_RestoreWindow(self._handle)
+
+    def show(self):
+        _SDL.SDL_ShowWindow(self._handle)
 
 def disable_screensaver():
     _SDL.SDL_DisableScreenSaver()
@@ -157,9 +236,8 @@ def is_screensaver_enabled():
 
 def get_current_display_mode(display):
     mode = DisplayMode()
-    result = _SDL.SDL_GetCurrentDisplayMode(display, ctypes.byref(mode))
-    if result == 0:
-        return mode
+    errcheck(_SDL.SDL_GetCurrentDisplayMode(display, ctypes.byref(mode)))
+    return mode
 
 _SDL.SDL_GetPixelFormatName.restype = ctypes.c_char_p
 def get_pixel_format_name(format):
@@ -194,5 +272,18 @@ def get_display_modes(display_index):
 
 def get_desktop_display_mode(display_index):
     mode = DisplayMode()
-    _SDL.SDL_GetDesktopDisplayMode(display_index, ctypes.byref(mode))
+    errcheck(_SDL.SDL_GetDesktopDisplayMode(display_index, ctypes.byref(mode)))
     return mode
+
+class Rect(ctypes.Structure):
+    _fields_ = (
+        ('x', ctypes.c_int),
+        ('y', ctypes.c_int),
+        ('width', ctypes.c_int),
+        ('height', ctypes.c_int),
+    )
+
+def get_display_bounds(display_index):
+    rect = Rect()
+    errcheck(_SDL.SDL_GetDisplayBounds(display_index, ctypes.byref(rect)))
+    return rect

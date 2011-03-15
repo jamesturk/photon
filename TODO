@@ -1,0 +1,23 @@
+Soon
+    * flesh out Window
+    * flesh out Renderer
+
+Someday
+    * Point/Rect
+    * Event Support
+    * have Window pass-through to Renderer
+
+Maybe
+    * better enum solution?
+    * pixel formats
+    * SDL_SysWM
+    * Joystick
+    * Haptic
+    * Audio
+    * Timers
+    * SDL_GetPlatform, CPU detection, Byte Order, SDL_GetPowerInfo
+
+Probably Not
+    * Threads
+    * File Ops
+    * LoadSO

@@ -1,0 +1,15 @@
+http://wiki.libsdl.org/moin.cgi/CategoryVideo
+    SDL_CreateWindowFrom -- takes a void*
+    SDL_GetClosestDisplayMode -- maybe later
+    SDL_GetWindowData -- returns void*
+    SDL_SetWindowData -- takes void*
+    SDL_GetWindowFromID -- no use in class based approach?
+    SDL_GetWindowSurface -- can't be used with rendering API
+    SDL_UpdateWindowSurface -- ditto
+    SDL_UpdatewindowSurfaceRects -- ditto
+    SDL_GetWindowWMInfo -- window WM info not being used
+    SDL_SetWindowDisplayMode -- add later
+    SDL_SetWindowIcon -- later
+    SDL_SetWindowFullscreen -- later
+    SDL_VideoInit -- later
+    SDL_VideoQuit -- later
