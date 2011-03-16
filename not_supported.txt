@@ -29,3 +29,10 @@ CategoryRender
     SDL_RenderReadPixels -- returns void*
 
 SDL_pixels
+
+Made Irrelevant by Python
+    Byte Order
+    File I/O Abstraction
+    Shared Object Loading
+    Threads/Atomic Operations
+
