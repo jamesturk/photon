@@ -146,6 +146,16 @@ class Renderer(object):
                                              ctypes.byref(a)))
         return (r,g,b,a)
 
+    @property
+    def viewport(self):
+        rect = Rect()
+        _SDL.SDL_RenderGetViewport(self._renderer, ctypes.byref(rect))
+        return rect
+
+    @viewport.setter
+    def viewport(self, rect):
+        _SDL.SDL_RenderSetViewport(self._renderer, ctypes.pointer(rect))
+
     def clear(self):
         errcheck(_SDL.SDL_RenderClear(self._renderer))
 
@@ -332,6 +342,54 @@ class Rect(ctypes.Structure):
         ('width', ctypes.c_int),
         ('height', ctypes.c_int),
     )
+
+    def __eq__(self, other):
+        return (self.x == other.x and self.y == other.y and
+                self.width == other.width and self.height == other.height)
+
+    @staticmethod
+    def enclose_points(points, clip=None):
+        PtArray = Point*len(points)
+        _sdl_points = PtArray(*[Point(*pt) for pt in points])
+        result = Rect()
+
+        # returns True if a rect is created
+        if _SDL.SDL_EnclosePoints(_sdl_points, len(points),
+                                  ctypes.pointer(clip) if clip else None,
+                                  ctypes.byref(result)):
+            return result
+
+    def intersects(self, other):
+        return _SDL.SDL_HasIntersection(ctypes.pointer(self),
+                                        ctypes.pointer(other)) == 1
+
+    def intersection(self, other):
+        result = Rect()
+
+        # returns True if an intersection is found
+        if _SDL.SDL_IntersectRect(ctypes.pointer(self), ctypes.pointer(other),
+                                  ctypes.byref(result)):
+            return result
+
+    def union(self, other):
+        result = Rect()
+        _SDL.SDL_UnionRect(ctypes.pointer(self), ctypes.pointer(other),
+                           ctypes.byref(result))
+        return result
+
+    def intersects_line(self, x1, y1, x2, y2):
+        return _SDL.SDL_IntersectRectAndLine(ctypes.pointer(self),
+                                             ctypes.pointer(x1),
+                                             ctypes.pointer(y1),
+                                             ctypes.pointer(x2),
+                                             ctypes.pointer(y2)) == 1
+
+    def is_empty(self):
+        return self.width <= 0 or self.height <= 0
+
+    def __repr__(self):
+        return 'Rect({0}, {1}, {2}, {3})'.format(self.x, self.y,
+                                                 self.width, self.height)
 
 class Point(ctypes.Structure):
     _fields_ = (
