@@ -156,11 +156,35 @@ class Renderer(object):
         errcheck(_SDL.SDL_RenderDrawLine(self._renderer, x1, y1, x2, y2))
 
     def draw_lines(self, points):
-        T = Point*len(points)
-        _sdl_points = T(*[Point(*pt) for pt in points])
+        PtArray = Point*len(points)
+        _sdl_points = PtArray(*[Point(*pt) for pt in points])
         errcheck(_SDL.SDL_RenderDrawLines(self._renderer, _sdl_points,
                                           len(points)))
 
+    def draw_point(self, x, y):
+        errcheck(_SDL.SDL_RenderDrawPoint(self._renderer, x, y))
+
+    def draw_points(self, points):
+        PtArray = Point*len(points)
+        _sdl_points = PtArray(*[Point(*pt) for pt in points])
+        errcheck(_SDL.SDL_RenderDrawPoints(self._renderer, _sdl_points,
+                                          len(points)))
+
+    def draw_rect(self, rect):
+        _SDL.SDL_RenderDrawRect(self._renderer, ctypes.pointer(rect))
+
+    def draw_rects(self, rects):
+        RectArray = Rect*len(rects)
+        rects = RectArray(*rects)
+        _SDL.SDL_RenderDrawRects(self._renderer, rects, len(rects))
+
+    def fill_rect(self, rect):
+        _SDL.SDL_RenderFillRect(self._renderer, ctypes.pointer(rect))
+
+    def fill_rects(self, rects):
+        RectArray = Rect*len(rects)
+        rects = RectArray(*rects)
+        _SDL.SDL_RenderFillRects(self._renderer, rects, len(rects))
 
 _SDL.SDL_GetWindowTitle.restype = ctypes.c_char_p
 
