@@ -13,3 +13,16 @@ http://wiki.libsdl.org/moin.cgi/CategoryVideo
     SDL_SetWindowFullscreen -- later
     SDL_VideoInit -- later
     SDL_VideoQuit -- later
+    SDL_GL_* -- later?
+
+CategoryRender
+    SDL_CreateSoftwareRenderer
+    SDL_CreateTexture, SDL_CreateTextureFromSurface, SDL_DestroyTexture, SDL_DirtyTexture
+    SDL_GetRenderDrawBlendMode
+    SDL_GetTextureAlphaMod
+    SDL_GetTextureBlendMode
+    SDL_GetTextureColorMode
+    SDL_LockTexture
+    SDL_QueryTexture
+    SDL_QueryTexturePixels
+    SDL_RenderCopy

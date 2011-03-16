@@ -112,6 +112,16 @@ class RendererInfo(ctypes.Structure):
         ('max_texture_height', ctypes.c_int)
     )
 
+_render_driver_list = []
+def get_render_drivers():
+    if not _render_driver_list:
+        num = _SDL.SDL_GetNumRenderDrivers()
+        for i in xrange(num):
+            rinfo = RendererInfo()
+            errcheck(_SDL.SDL_GetRenderDriverInfo(i, ctypes.byref(rinfo)))
+            _render_driver_list.append(rinfo)
+    return _render_driver_list
+
 class Renderer(object):
 
     def __init__(self, window, index=-1, flags=0):
@@ -125,6 +135,17 @@ class Renderer(object):
     def set_draw_color(self, r, g, b, a=255):
         errcheck(_SDL.SDL_SetRenderDrawColor(self._renderer, r, g, b, a))
 
+    @property
+    def draw_color(self):
+        r = ctypes.c_uint8()
+        g = ctypes.c_uint8()
+        b = ctypes.c_uint8()
+        a = ctypes.c_uint8()
+        errcheck(_SDL.SDL_GetRenderDrawColor(self._renderer, ctypes.byref(r),
+                                             ctypes.byref(g), ctypes.byref(b),
+                                             ctypes.byref(a)))
+        return (r,g,b,a)
+
     def clear(self):
         errcheck(_SDL.SDL_RenderClear(self._renderer))
 
@@ -134,6 +155,11 @@ class Renderer(object):
     def draw_line(self, x1, y1, x2, y2):
         errcheck(_SDL.SDL_RenderDrawLine(self._renderer, x1, y1, x2, y2))
 
+    def draw_lines(self, points):
+        T = Point*len(points)
+        _sdl_points = T(*[Point(*pt) for pt in points])
+        errcheck(_SDL.SDL_RenderDrawLines(self._renderer, _sdl_points,
+                                          len(points)))
 
 
 _SDL.SDL_GetWindowTitle.restype = ctypes.c_char_p
@@ -216,7 +242,7 @@ class Window(object):
     def minimize(self):
         _SDL.SDL_MinimizeWindow(self._handle)
 
-    def raise(self):
+    def raise_window(self):
         _SDL.SDL_RaiseWindow(self._handle)
 
     def restore(self):
@@ -281,6 +307,12 @@ class Rect(ctypes.Structure):
         ('y', ctypes.c_int),
         ('width', ctypes.c_int),
         ('height', ctypes.c_int),
+    )
+
+class Point(ctypes.Structure):
+    _fields_ = (
+        ('x', ctypes.c_int),
+        ('y', ctypes.c_int),
     )
 
 def get_display_bounds(display_index):
