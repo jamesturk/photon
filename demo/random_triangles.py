@@ -1,4 +1,6 @@
-from csdl import init, Window, INIT
+from csdl import init, INIT
+from csdl.video import Window
+
 import random
 import time
 

@@ -1,3 +1,6 @@
+import ctypes
+from .internal import _SDL
+
 _SDL.SDL_GetPlatform.restype = ctypes.c_char_p
 
 def get_platform():
