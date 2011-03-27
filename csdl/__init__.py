@@ -1,8 +1,9 @@
 import ctypes
 from .internal import _SDL, errcheck, Version
+from enum import CEnum
 
 # Constants
-class INIT(object):
+class INIT(CEnum):
     TIMER       = 0x00000001
     AUDIO       = 0x00000010
     VIDEO       = 0x00000020
