@@ -14,7 +14,7 @@ def main():
             if not event:
                 break
             else:
-                print event.type
+                print repr(EventType.from_int(event.type))
 
         window.renderer.set_draw_color(0,0,0,255)
         window.renderer.clear()

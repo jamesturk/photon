@@ -1,7 +1,8 @@
 import ctypes
 from .internal import _SDL, Version
+from .enum import CEnum
 
-class EventType(int):
+class EventType(CEnum):
     FIRSTEVENT  = 0
 
     QUIT        = 0x100
@@ -54,7 +55,7 @@ GestureID = ctypes.c_int64
 TouchID = ctypes.c_int64
 FingerID = ctypes.c_int64
 
-class SysWMType(int):
+class SysWMType(CEnum):
     UNKNOWN = 0
     WINDOWS = 1
     X11 = 2
