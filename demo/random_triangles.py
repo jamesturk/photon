@@ -1,9 +1,9 @@
-from csdl import init, Window, SDL_INIT_EVERYTHING
+from csdl import init, Window, INIT
 import random
 import time
 
 def main():
-    init(SDL_INIT_EVERYTHING)
+    init(INIT.EVERYTHING)
     window = Window('test', 100, 100, 512, 512, 0)
 
     while True:

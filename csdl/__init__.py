@@ -1,5 +1,5 @@
 import ctypes
-_SDL = ctypes.cdll.LoadLibrary('/usr/local/lib/libSDL-1.3.so.0.0.0')
+from .internal import _SDL
 
 # Constants
 class INIT(object):
@@ -107,10 +107,11 @@ class Version(ctypes.Structure):
     )
 
     def __str__(self):
-        return '{0}.{1}.{2}'.format(self.major,
-                                    self.minor,
-                                    self.patch)
+        return '{0}.{1}.{2}'.format(self.major, self.minor, self.patch)
 
+    def __repr__(self):
+        return 'Version({0},{1},{2})'.format(self.major, self.minor,
+                                             self.patch)
 
 def get_version():
     v = Version()
@@ -123,55 +124,6 @@ def get_revision():
 
 
 #### System Information
-
-_SDL.SDL_GetPlatform.restype = ctypes.c_char_p
-def get_platform():
-    return _SDL.SDL_GetPlatform()
-
-def get_cpu_cache_line_size():
-    return _SDL.SDL_GetCPUCacheLineSize()
-
-def get_cpu_count():
-    return _SDL.SDL_GetCPUCount()
-
-def has_3DNow():
-    return _SDL.SDL_Has3DNow() == 1
-
-def has_AltiVec():
-    return _SDL.SDL_HasAltiVec() == 1
-
-def has_MMX():
-    return _SDL.SDL_HasMMX() == 1
-
-def has_RDTSC():
-    return _SDL.SDL_HasRDTSC() == 1
-
-def has_SSE():
-    return _SDL.SDL_HasSSE() == 1
-
-def has_SSE2():
-    return _SDL.SDL_HasSSE2() == 1
-
-def has_SSE3():
-    return _SDL.SDL_HasSSE3() == 1
-
-def has_SSE41():
-    return _SDL.SDL_HasSSE3() == 1
-
-def has_SSE42():
-    return _SDL.SDL_HasSSE42() == 1
-
-def get_power_info():
-    seconds = ctypes.c_int()
-    percent = ctypes.c_int()
-    state = _SDL.SDL_GetPowerInfo(ctypes.byref(seconds),
-                                  ctypes.byref(percent))
-    state = {0: 'UNKNOWN', 1: 'ON_BATTERY', 2: 'NO_BATTERY', 3: 'CHARGING',
-             4: 'CHARGED'}[state]
-    return state, seconds.value, percent.value
-
-
-#### video
 
 class DisplayMode(ctypes.Structure):
     _fields_ = (
@@ -486,6 +438,9 @@ class Point(ctypes.Structure):
         ('x', ctypes.c_int),
         ('y', ctypes.c_int),
     )
+
+    def __repr__(self):
+        return 'Point({0}, {1})'.format(self.x, self.y)
 
 def get_display_bounds(display_index):
     rect = Rect()
