@@ -1,5 +1,5 @@
 import ctypes
-from .internal import _SDL, errcheck
+from .internal import _SDL, errcheck, Version
 
 # Constants
 class INIT(object):
@@ -42,19 +42,6 @@ def quit():
 
 ##### Version Info
 
-class Version(ctypes.Structure):
-    _fields_ = (
-        ("major", ctypes.c_uint8),
-        ("minor", ctypes.c_uint8),
-        ("patch", ctypes.c_uint8)
-    )
-
-    def __str__(self):
-        return '{0}.{1}.{2}'.format(self.major, self.minor, self.patch)
-
-    def __repr__(self):
-        return 'Version({0},{1},{2})'.format(self.major, self.minor,
-                                             self.patch)
 
 def get_version():
     v = Version()

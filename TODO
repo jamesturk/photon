@@ -1,9 +1,4 @@
-Soon
-    * flesh out Window
-    * flesh out Renderer
-
 Someday
-    * Point/Rect
     * Event Support
     * have Window pass-through to Renderer
 
@@ -15,7 +10,6 @@ Maybe
     * Haptic
     * Audio
     * Timers
-    * SDL_GetPlatform, CPU detection, Byte Order, SDL_GetPowerInfo
 
 Probably Not
     * Threads

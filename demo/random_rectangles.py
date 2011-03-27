@@ -1,5 +1,6 @@
 from csdl import init, INIT
 from csdl.video import Window, Rect
+from csdl.events import EventType, poll_event
 import random
 import time
 
@@ -8,6 +9,13 @@ def main():
     window = Window('test', 100, 100, 512, 512, 0)
 
     while True:
+        while True:
+            event = poll_event()
+            if not event:
+                break
+            else:
+                print event.type
+
         window.renderer.set_draw_color(0,0,0,255)
         window.renderer.clear()
         window.renderer.set_draw_color(255,0,0,255)
