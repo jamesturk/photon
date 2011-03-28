@@ -21,14 +21,18 @@ class RendererInfo(ctypes.Structure):
     _fields_ = (
         ('name', ctypes.c_char_p),
         ('flags', ctypes.c_uint32),
-        ('mod_modes', ctypes.c_uint32),
-        ('blend_modes', ctypes.c_uint32),
-        ('scale_modes', ctypes.c_uint32),
+# these are included in docs but not SDL_renderer.h
+#        ('mod_modes', ctypes.c_uint32),
+#        ('blend_modes', ctypes.c_uint32),
+#        ('scale_modes', ctypes.c_uint32),
         ('num_texture_formats', ctypes.c_uint32),
-        ('texture_formats', ctypes.c_uint32*50),
+        ('texture_formats', ctypes.c_uint32*16),
         ('max_texture_width', ctypes.c_int),
         ('max_texture_height', ctypes.c_int)
     )
+
+    def __repr__(self):
+        return "<RendererInfo '{0}'>".format(self.name)
 
 _render_driver_list = []
 def get_render_drivers():
@@ -113,6 +117,21 @@ class Renderer(object):
         RectArray = Rect*len(rects)
         rects = RectArray(*rects)
         _SDL.SDL_RenderFillRects(self._renderer, rects, len(rects))
+
+
+class WindowFlags(CEnum):
+    FULLSCREEN    = 0x00000001
+    OPENGL        = 0x00000002
+    SHOWN         = 0x00000004
+    HIDDEN        = 0x00000008
+    BORDERLESS    = 0x00000010
+    RESIZABLE     = 0x00000020
+    MINIMIZED     = 0x00000040
+    MAXIMIZED     = 0x00000080
+    INPUT_GRABBED = 0x00000100
+    INPUT_FOCUS   = 0x00000200
+    MOUSE_FOCUS   = 0x00000400
+    FOREIGN       = 0x00000800
 
 _SDL.SDL_GetWindowTitle.restype = ctypes.c_char_p
 
