@@ -1,5 +1,5 @@
 import ctypes
-from .internal import _SDL, Version
+from .internal import _SDL, Version, errcheck, SDLError
 from .enum import CEnum
 
 class EventType(CEnum):
@@ -142,7 +142,7 @@ class MouseButtonEvent(ctypes.Structure):
         ('type', ctypes.c_uint32),
         ('window_id', ctypes.c_uint32),
         ('button', ctypes.c_uint8),
-        ('istate', ctypes.c_uint8),
+        ('state', ctypes.c_uint8),
         ('_padding1', ctypes.c_uint8),
         ('_padding2', ctypes.c_uint8),
         ('x', ctypes.c_int),
@@ -213,7 +213,7 @@ class TouchFingerEvent(ctypes.Structure):
         ('pressure', ctypes.c_uint16),
     )
 
-class TouchFingerEvent(ctypes.Structure):
+class TouchButtonEvent(ctypes.Structure):
     _fields_ = (
         ('type', ctypes.c_uint32),
         ('window_id', ctypes.c_uint32),
@@ -301,7 +301,7 @@ class Event(ctypes.Union):
         ('user', UserEvent),
         ('syswm', SysWMEvent),
         ('tfinger', TouchFingerEvent),
-        #('tbutton', TouchButtonEvent),
+        ('tbutton', TouchButtonEvent),
         ('mgesture', MultiGestureEvent),
         ('dgesture', DollarGestureEvent),
         ('active', ActiveEvent),
@@ -341,9 +341,9 @@ def wait_event(timeout=0):
     event = Event()
 
     if timeout:
-        retval = _SDL.SDL_WaitEvent(ctypes.byref(event))
-    else:
         retval = _SDL.SDL_WaitEventTimeout(ctypes.byref(event), timeout)
+    else:
+        retval = _SDL.SDL_WaitEvent(ctypes.byref(event))
 
     if retval:
         return event
@@ -355,4 +355,7 @@ def event_state(type, state):
     errcheck(_SDL.SDL_EventState(type, state))
 
 def register_events(num_events):
-    return _SDL.SDL_RegisterEvents(num_events)
+    registered = _SDL.SDL_RegisterEvents(num_events)
+    if registered < 0:
+        raise SDLError("out of available event ids for register_events")
+    return registered
