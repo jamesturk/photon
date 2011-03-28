@@ -67,7 +67,7 @@ class Renderer(object):
         errcheck(_SDL.SDL_GetRenderDrawColor(self._renderer, ctypes.byref(r),
                                              ctypes.byref(g), ctypes.byref(b),
                                              ctypes.byref(a)))
-        return (r,g,b,a)
+        return (r.value, g.value, b.value, a.value)
 
     @property
     def viewport(self):
@@ -192,7 +192,7 @@ class Window(object):
         h = ctypes.c_int()
         _SDL.SDL_GetWindowSize(self._handle, ctypes.byref(w),
                                ctypes.byref(h))
-        return w,h
+        return w.value, h.value
 
     def resize(self, w, h):
         _SDL.SDL_SetWindowSize(self._handle, w, h)
@@ -235,7 +235,7 @@ def is_screensaver_enabled():
 def get_current_display_mode(display):
     mode = DisplayMode()
     errcheck(_SDL.SDL_GetCurrentDisplayMode(display, ctypes.byref(mode)))
-    return mode
+    return mode.value
 
 _SDL.SDL_GetPixelFormatName.restype = ctypes.c_char_p
 def get_pixel_format_name(format):
@@ -265,13 +265,13 @@ def get_display_modes(display_index):
         for i in xrange(num):
             mode = DisplayMode()
             _SDL.SDL_GetDisplayMode(display_index, i, ctypes.byref(mode))
-            _display_mode_list[display_index].append(mode)
+            _display_mode_list[display_index].append(mode.value)
     return _display_mode_list[display_index]
 
 def get_desktop_display_mode(display_index):
     mode = DisplayMode()
     errcheck(_SDL.SDL_GetDesktopDisplayMode(display_index, ctypes.byref(mode)))
-    return mode
+    return mode.value
 
 class Rect(ctypes.Structure):
     _fields_ = (
@@ -295,7 +295,7 @@ class Rect(ctypes.Structure):
         if _SDL.SDL_EnclosePoints(_sdl_points, len(points),
                                   ctypes.pointer(clip) if clip else None,
                                   ctypes.byref(result)):
-            return result
+            return result.value
 
     def intersects(self, other):
         return _SDL.SDL_HasIntersection(ctypes.pointer(self),
@@ -307,13 +307,13 @@ class Rect(ctypes.Structure):
         # returns True if an intersection is found
         if _SDL.SDL_IntersectRect(ctypes.pointer(self), ctypes.pointer(other),
                                   ctypes.byref(result)):
-            return result
+            return result.value
 
     def union(self, other):
         result = Rect()
         _SDL.SDL_UnionRect(ctypes.pointer(self), ctypes.pointer(other),
                            ctypes.byref(result))
-        return result
+        return result.value
 
     def intersects_line(self, x1, y1, x2, y2):
         return _SDL.SDL_IntersectRectAndLine(ctypes.pointer(self),
@@ -341,4 +341,4 @@ class Point(ctypes.Structure):
 def get_display_bounds(display_index):
     rect = Rect()
     errcheck(_SDL.SDL_GetDisplayBounds(display_index, ctypes.byref(rect)))
-    return rect
+    return rect.value
