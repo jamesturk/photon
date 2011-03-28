@@ -1,5 +1,6 @@
 import ctypes
 from .internal import _SDL, errcheck
+from .enum import CEnum
 
 class DisplayMode(ctypes.Structure):
     _fields_ = (
