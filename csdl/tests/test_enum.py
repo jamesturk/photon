@@ -1,4 +1,5 @@
 from csdl.enum import CEnum, CEnumSymbol
+import nose.tools
 
 class TestEnum(CEnum):
     FIRST = 0
@@ -18,6 +19,10 @@ def test_enumsymbol():
 
 def test_cenum():
     assert len(TestEnum.values()) == 3
+    assert len(list(iter(TestEnum))) == 3
+
+def test_cenum_from_int():
     big_hopefully = TestEnum.from_int(9001)
     assert isinstance(big_hopefully, CEnumSymbol)
     assert big_hopefully.name == 'BIG'
+    nose.tools.assert_raises(ValueError, TestEnum.from_int, 50)

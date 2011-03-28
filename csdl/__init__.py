@@ -36,7 +36,7 @@ def quit_sub_system(flags):
     errcheck(_SDL.SDL_QuitSubSystem(flags))
 
 def was_init(flags=0):
-    errcheck(_SDL.SDL_WasInit(flags))
+    return errcheck(_SDL.SDL_WasInit(flags))
 
 def quit():
     _SDL.SDL_Quit()
