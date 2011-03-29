@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import random
 from csdl.video import Rect
 from demo_utils import simple_timed_loop
