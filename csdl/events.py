@@ -48,6 +48,23 @@ class EventType(CEnum):
     USEREVENT = 0x8000
     LASTEVENT = 0xFFFF
 
+class WindowEventType(CEnum):
+    NONE = 0
+    SHOWN = 1
+    HIDDEN = 2
+    EXPOSED = 3
+    MOVED = 4
+    RESIZED = 5
+    SIZE_CHANGED = 6
+    MINIMIZED = 7
+    MAXIMIZED = 8
+    RESTORED =  9
+    ENTER = 10
+    LEAVE = 11
+    FOCUS_GAINED = 12
+    FOCUS_LOST = 13
+    CLOSE = 14
+
 # a few typedefs
 Keycode = ctypes.c_int32
 Scancode = ctypes.c_int32  # enum, not sure about this one
