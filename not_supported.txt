@@ -13,7 +13,7 @@ http://wiki.libsdl.org/moin.cgi/CategoryVideo
     SDL_SetWindowFullscreen -- later
     SDL_VideoInit -- later
     SDL_VideoQuit -- later
-    SDL_GL_* -- later?
+    SDL_GL_GetProcAddress, SDL_GL_LoadLibrary, SDL_GL_UnloadLibrary
 
 CategoryRender
     SDL_CreateSoftwareRenderer

@@ -144,7 +144,22 @@ class Window(object):
         self.renderer = Renderer(self._handle)
 
     def destroy(self):
+        _glcontext = getattr(self, '_glcontext', None)
+        if _glcontext:
+            _SDL.SDL_GL_DeleteContext(_glcontext)
         _SDL.SDL_DestroyWindow(self._handle)
+
+    @property
+    def gl_context(self):
+        if not hasattr(self, '_glcontext'):
+            self._glcontext = _SDL.SDL_GL_CreateContext(self._handle)
+        return self._glcontext
+
+    def swap():
+        _SDL.SDL_GL_SwapWindow(self._handle)
+
+    def make_context_current():
+        errcheck(_SDL.SDL_GL_MakeCurrent(self._handle, self._glcontext))
 
     @property
     def display(self):
@@ -342,3 +357,44 @@ def get_display_bounds(display_index):
     rect = Rect()
     errcheck(_SDL.SDL_GetDisplayBounds(display_index, ctypes.byref(rect)))
     return rect.value
+
+
+def gl_extension_supported(extension):
+    return _SDL.SDL_GL_ExtensionSupported(extension) == 1
+
+class GL_Attr(CEnum):
+    SDL_GL_RED_SIZE = 0
+    SDL_GL_GREEN_SIZE = 1
+    SDL_GL_BLUE_SIZE = 2
+    SDL_GL_ALPHA_SIZE = 3
+    SDL_GL_BUFFER_SIZE = 4
+    SDL_GL_DOUBLEBUFFER = 5
+    SDL_GL_DEPTH_SIZE = 6
+    SDL_GL_STENCIL_SIZE = 7
+    SDL_GL_ACCUM_RED_SIZE = 8
+    SDL_GL_ACCUM_GREEN_SIZE = 9
+    SDL_GL_ACCUM_BLUE_SIZE = 10
+    SDL_GL_ACCUM_ALPHA_SIZE = 11
+    SDL_GL_STEREO = 12
+    SDL_GL_MULTISAMPLEBUFFERS = 13
+    SDL_GL_MULTISAMPLESAMPLES = 14
+    SDL_GL_ACCELERATED_VISUAL = 15
+    SDL_GL_RETAINED_BACKING = 16
+    SDL_GL_CONTEXT_MAJOR_VERSION = 17
+    SDL_GL_CONTEXT_MINOR_VERSION = 18
+
+def gl_get_attribute(attr):
+    attrvalue = ctypes.c_int()
+    errcheck(_SDL.SDL_GL_GetAttribute(attr, ctypes.byref(attrvalue)))
+    return attrvalue.value
+
+def gl_set_attribute(attr, value):
+    errcheck(_SDL.SDL_GL_SetAttribute(attr, value))
+
+def gl_get_swap_interval():
+    return errcheck(_SDL.SDL_GL_GetSwapInterval())
+
+def gl_set_swap_interval(interval):
+    # 0: immediate
+    # 1: sync w/ vtrace
+    return errcheck(_SDL.SDL_GL_SetSwapInterval(interval))

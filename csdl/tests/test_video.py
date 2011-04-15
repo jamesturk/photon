@@ -1,6 +1,7 @@
-from csdl import init, InitFlags, quit
+from csdl import init, InitFlags
 from csdl import video
 from nose.tools import with_setup
+import time
 
 def video_setup():
     init(InitFlags.VIDEO)
@@ -37,7 +38,7 @@ def test_rect_basics():
     assert repr(r1) == 'Rect(0, 0, 10, 10)'
 
 
-@with_setup(video_setup, quit)
+@with_setup(video_setup)
 def test_window_title():
     w = video.Window("window_title_test", 10, 10, 50, 50)
     assert w.title == "window_title_test"
@@ -45,7 +46,7 @@ def test_window_title():
     assert w.title == "something completely different"
     w.destroy()
 
-@with_setup(video_setup, quit)
+@with_setup(video_setup)
 def test_window_size():
     w = video.Window("window_size_test", 10, 10, 50, 50)
     assert w.size == (50, 50)
@@ -53,7 +54,7 @@ def test_window_size():
     assert w.size == (100, 120)
     w.destroy()
 
-@with_setup(video_setup, quit)
+@with_setup(video_setup)
 def test_window_position():
     w = video.Window('window_position_test', 10, 10, 50, 50)
     assert w.position == (10, 10)
@@ -61,7 +62,7 @@ def test_window_position():
     assert w.position == (100, 110)
     w.destroy()
 
-@with_setup(video_setup, quit)
+@with_setup(video_setup)
 def test_screensaver():
     enabled = video.is_screensaver_enabled()
 
@@ -77,8 +78,19 @@ def test_screensaver():
         assert not video.is_screensaver_enabled()
 
 
-@with_setup(video_setup, quit)
+@with_setup(video_setup)
 def test_video_info():
     # make sure both aren't blank
     assert video.get_num_video_displays()
     assert video.get_current_video_driver()
+
+@with_setup(video_setup)
+def test_gl_info():
+    w = video.Window('window_position_test', 10, 10, 50, 50,
+                     video.WindowFlags.OPENGL)
+
+    for attr in video.GL_Attr:
+        print('{0}: {1}'.format(repr(attr)[1:-1],
+                               video.gl_get_attribute(attr)))
+    print 'GL Swap Interval:', video.gl_get_swap_interval()
+
