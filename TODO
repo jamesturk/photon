@@ -2,7 +2,6 @@ Someday
     * have Window pass-through to Renderer
 
 Maybe
-    * better enum solution?
     * pixel formats
     * SDL_SysWM
     * Joystick

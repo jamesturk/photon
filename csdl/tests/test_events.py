@@ -1,7 +1,7 @@
 from nose.tools import with_setup, raises
-from csdl import init, InitFlags
-from csdl.internal import SDLError
-from csdl.events import *
+from .. import init, InitFlags
+from ..internal import SDLError
+from ..events import *
 
 def get_mm_event():
     mm_event = MouseMotionEvent(type=EventType.MOUSEMOTION,

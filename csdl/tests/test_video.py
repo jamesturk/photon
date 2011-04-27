@@ -1,5 +1,4 @@
-from csdl import init, InitFlags
-from csdl import video
+from .. import init, InitFlags, video
 from nose.tools import with_setup
 import time
 

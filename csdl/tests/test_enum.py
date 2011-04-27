@@ -1,4 +1,4 @@
-from csdl.enum import CEnum, CEnumSymbol
+from ..enum import CEnum, CEnumSymbol
 import nose.tools
 
 class TestEnum(CEnum):

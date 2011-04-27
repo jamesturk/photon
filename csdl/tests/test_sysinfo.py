@@ -1,4 +1,4 @@
-from csdl import sysinfo
+from .. import sysinfo
 
 def test_get_platform():
     assert isinstance(sysinfo.get_platform(), str)
