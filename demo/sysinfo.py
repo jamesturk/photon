@@ -1,5 +1,5 @@
 from __future__ import print_function
-from csdl import sysinfo
+from photon import sysinfo
 
 def main():
     print('Platform:', sysinfo.get_platform())

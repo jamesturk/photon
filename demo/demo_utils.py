@@ -1,6 +1,6 @@
-from csdl import init, InitFlags
-from csdl.video import Window
-from csdl.events import EventType, poll_event, WindowEventType
+from photon import init, InitFlags
+from photon.video import Window
+from photon.events import EventType, poll_event, WindowEventType
 import time
 
 def simple_timed_loop(draw_func):
