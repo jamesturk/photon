@@ -3,6 +3,8 @@ from pyglet.gl import *
 import random
 import time
 
+N_TRIANGLES = 1000
+
 window = pyglet.window.Window()
 
 frames = 0
@@ -21,7 +23,7 @@ def on_draw():
     window.clear()
     glClear(GL_COLOR_BUFFER_BIT)
     glLoadIdentity()
-    for x in range(1000):
+    for x in range(N_TRIANGLES):
         glColor3ub(random.randint(0,255), random.randint(0,255), random.randint(0,255))
         glBegin(GL_LINE_LOOP)
         glVertex2f(random.randint(0,512), random.randint(0,512))

@@ -1,6 +1,8 @@
 #include "SDL/SDL.h"
 #include <stdlib.h>
 
+#define N_TRIANGLES 1000
+
 int main(int argc, char **argv) {
     SDL_Init(SDL_INIT_EVERYTHING);
 
@@ -37,7 +39,7 @@ int main(int argc, char **argv) {
         SDL_RenderClear(renderer);
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 
-        for(i=0; i < 20; ++i) {
+        for(i=0; i < N_TRIANGLES; ++i) {
             SDL_SetRenderDrawColor(renderer, rand()%255, rand()%255, rand()%255, 255);
             p1.x = rand()%512;
             p1.y = rand()%512;

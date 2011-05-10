@@ -2,6 +2,8 @@ import pygame
 import time
 import random
 
+N_TRIANGLES = 1000
+
 def main():
     pygame.init()
 
@@ -21,7 +23,7 @@ def main():
 
 
         surface.fill((0,0,0))
-        for i in xrange(1000):
+        for i in xrange(N_TRIANGLES):
             p1 = (random.randint(0,512), random.randint(0, 512))
             p2 = (random.randint(0,512), random.randint(0, 512))
             p3 = (random.randint(0,512), random.randint(0, 512))

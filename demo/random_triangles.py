@@ -2,11 +2,13 @@
 from demo_utils import simple_timed_loop
 import random
 
+N_TRIANGLES = 1000
+
 def draw(window):
     window.renderer.set_draw_color(0,0,0,255)
     window.renderer.clear()
     window.renderer.set_draw_color(255,0,0,255)
-    for i in xrange(1000):
+    for i in xrange(N_TRIANGLES):
         window.renderer.set_draw_color(random.randint(0,255),
                                        random.randint(0,255),
                                        random.randint(0,255))
