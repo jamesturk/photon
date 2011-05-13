@@ -7,11 +7,12 @@ def init_timer():
 def test_performance_counter():
     init_timer()
     first = timer.get_performance_counter()
-    time.sleep(1.1)
+    time.sleep(0.1)
     second = timer.get_performance_counter()
     freq = timer.get_performance_frequency()
     assert second > first
-    assert second/freq > first/freq
+    # delay should safely put it in this range
+    assert 0.05 < second/float(freq) - first/float(freq) < 0.2
 
 def test_get_ticks():
     init_timer()
