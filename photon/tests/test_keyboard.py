@@ -1,14 +1,15 @@
 from .. import init, InitFlags
 from ..keyboard import (get_mod_state, set_mod_state, get_key_from_scancode,
-                        get_scancode_from_key, get_key_name, get_scancode_name)
+                        get_scancode_from_key, get_key_name, get_scancode_name,
+                        Scancode, Keycode)
 from nose.tools import with_setup
 
 _keys = [
     # scancode, keycode, name
-    (40, 13, 'Return'),
-    (4, 97, 'A'),
-    (87, 1073741911, 'Keypad +'),
-    (225, 1073742049, 'Left Shift')
+    (Scancode.RETURN, Keycode.RETURN, 'Return'),
+    (Scancode.A, Keycode.a, 'A'),
+    (Scancode.KP_PLUS, Keycode.KP_PLUS, 'Keypad +'),
+    (Scancode.LSHIFT, Keycode.LSHIFT, 'Left Shift')
 ]
 
 def init_everything():
