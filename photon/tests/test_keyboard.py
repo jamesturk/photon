@@ -1,7 +1,7 @@
 from .. import init, InitFlags
 from ..keyboard import (get_mod_state, set_mod_state, get_key_from_scancode,
                         get_scancode_from_key, get_key_name, get_scancode_name,
-                        Scancode, Keycode)
+                        Scancode, Keycode, Keymod)
 from nose.tools import with_setup
 
 _keys = [
@@ -17,7 +17,14 @@ def init_everything():
 
 @with_setup(init_everything)
 def test_mod_state():
-    pass # TODO
+    assert get_mod_state() == 0
+    set_mod_state(Keymod.LSHIFT)
+    assert get_mod_state() == Keymod.LSHIFT
+    # unpress shift, press alt & gui
+    set_mod_state(Keymod.RALT|Keymod.LGUI)
+    assert get_mod_state() & Keymod.SHIFT == 0
+    assert get_mod_state() & Keymod.ALT
+    assert get_mod_state() & Keymod.GUI
 
 @with_setup(init_everything)
 def test_get_key_from_scancode():
