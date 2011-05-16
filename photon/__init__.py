@@ -2,6 +2,8 @@ import ctypes
 from .internal import _SDL, errcheck, Version
 from enum import CEnum
 
+__version__ = '0.1.dev'
+
 # Constants
 class InitFlags(CEnum):
     TIMER       = 0x00000001
