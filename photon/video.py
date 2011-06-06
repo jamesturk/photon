@@ -155,10 +155,10 @@ class Window(object):
             self._glcontext = _SDL.SDL_GL_CreateContext(self._handle)
         return self._glcontext
 
-    def swap():
+    def swap(self):
         _SDL.SDL_GL_SwapWindow(self._handle)
 
-    def make_context_current():
+    def make_context_current(self):
         errcheck(_SDL.SDL_GL_MakeCurrent(self._handle, self._glcontext))
 
     @property
